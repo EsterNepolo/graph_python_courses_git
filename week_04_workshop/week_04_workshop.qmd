@@ -1,0 +1,70 @@
+---
+title: "India TB Pathways Analysis"
+author: "Ester Nepolo"
+format: 
+    html:
+        embed-resources: true
+execute: 
+    echo: false
+
+---
+
+```{python}
+# Import packages
+import pandas as pd
+import plotly.express as px
+import itables
+```
+
+# Introduction to dataset
+
+The India TB Pathways dataset is based on a study conducted in Vellore district, Tamil Nadu, India. It examines the pre-diagnostic costs and health-seeking behavior of 880 new adult pulmonary tuberculosis patients registered at Primary Health Centres (PHCs). The data can be accessed here [links](https://github.com/the_graph_courses/pbb_q4_2024_materials/raw/refs/heads/main/week_04_workshop/data/india_tb_pathways_and_costs.zip) and more information on  the data can be accessed here [links](https://zenodo.org/records/5014153).
+
+
+```{python}
+# Load the data set
+india_tb = pd.read_csv('C:/Users/ester.nepolo.GFP-PMU/Desktop/Desktop 2024/My Courses/Python/graph_courses_python/week_04_workshop/data/india_tb_pathways_and_costs.csv')
+
+itables.show(india_tb)
+```
+
+# Study setting
+
+The map provides an overview of the state of Tamil Nadu in India, by administrative districts. Vellore district where the study was conducted is located in the north-east.
+
+![Map of Tamil Nadu, India. Vellore district in the north-east is where the study was conducted.](images/VdhR2fr%20-%20Imgur.png)
+
+# Age distribution of TB patients by Sex
+
+This plot shows the age distribution of TB patients, normalized as a percentage, disaggregated by sex.
+
+Key observations:
+
+- For younger age groups (20-40), there is a higher proportion of 
+  female TB patients lkcompared to males.
+- In the 40-60 age range, the percentage of male TB patients increases significantly,
+  overtaking females, especially noticeable around ages 50-60.
+- At older ages (around 70+), the proportion becomes nearly 100% male, indicating that
+  female representation drops significantly in these age groups.
+
+This visualization highlights the gender differences in TB prevalence across different age groups, with males being more dominant in older age groups and females being more common in younger age groups.
+
+
+```{python}
+age_sex_plot = px.histogram(india_tb, x="Age", color="Sex", barnorm="percent", text_auto=".0f",
+title="Age Distribution of TB Patients by Sex")
+age_sex_plot
+```
+
+# Highlights of key numbers
+```{python}
+# Average health systems delay
+average_hs_delay = int(round(india_tb['Health sys delay (in days)'].mean(), 0))
+
+# Average treatment initiation delay
+average_treatment_delay = int(round(india_tb['Treatment initiation delay (in days)'].mean(), 0))
+
+```
+
+Due to Health Systems delays, on average TB patients wait for about `{python} average_hs_delay` days before they are diagnosed.
+Once they are dignosed, it takes them an average of `{python} average_treatment_delay` days to be initiated on TB treatment.

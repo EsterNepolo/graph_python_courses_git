@@ -1,0 +1,2765 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ester Nepolo">
+
+<title>Workshop Exercise: Grouping, Summarizing and Plotting</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="week_08_workshop_instructions_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week_08_workshop_instructions_files/libs/quarto-html/quarto.js"></script>
+<script src="week_08_workshop_instructions_files/libs/quarto-html/popper.min.js"></script>
+<script src="week_08_workshop_instructions_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="week_08_workshop_instructions_files/libs/quarto-html/anchor.min.js"></script>
+<link href="week_08_workshop_instructions_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week_08_workshop_instructions_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="week_08_workshop_instructions_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="week_08_workshop_instructions_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="week_08_workshop_instructions_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+if (typeof require !== 'undefined') {
+require.undef("plotly");
+requirejs.config({
+    paths: {
+        'plotly': ['https://cdn.plot.ly/plotly-2.35.2.min']
+    }
+});
+require(['plotly'], function(Plotly) {
+    window._Plotly = Plotly;
+});
+}
+</script>
+
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Workshop Exercise: Grouping, Summarizing and Plotting</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ester Nepolo </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<section id="load-packages" class="level3">
+<h3 class="anchored" data-anchor-id="load-packages">Load Packages</h3>
+<p>To get started, <strong>load in the needed packages</strong>: pandas, numpy, plotly express.</p>
+<div id="66c1b7b3" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="import-data" class="level3">
+<h3 class="anchored" data-anchor-id="import-data">Import Data</h3>
+<p>Download the <code>india_tuberculosis.csv</code> file from the course portal and save it in your <code>data</code> folder.</p>
+<p>Now, <strong>read in the <code>india_tuberculosis</code> dataset into Python from your data folder</strong> into a DataFrame called <code>tb</code>. The DataFrame you import should have 880 rows and 21 columns. Remember to use relative paths to allow your script to use project-relative paths.</p>
+<div id="f4096292" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the CSV file</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>tb <span class="op">=</span> pd.read_csv(<span class="st">"data/india_tuberculosis.csv"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">Sex</th>
+<th data-quarto-table-cell-role="th">Age</th>
+<th data-quarto-table-cell-role="th">Education</th>
+<th data-quarto-table-cell-role="th">Employment</th>
+<th data-quarto-table-cell-role="th">Alcohol</th>
+<th data-quarto-table-cell-role="th">Smoking</th>
+<th data-quarto-table-cell-role="th">WtinKgs</th>
+<th data-quarto-table-cell-role="th">HtinCms</th>
+<th data-quarto-table-cell-role="th">bmi</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">Form of TB</th>
+<th data-quarto-table-cell-role="th">Chext Xray</th>
+<th data-quarto-table-cell-role="th">first visit location</th>
+<th data-quarto-table-cell-role="th">first visit cost</th>
+<th data-quarto-table-cell-role="th">second visit location</th>
+<th data-quarto-table-cell-role="th">second visit cost</th>
+<th data-quarto-table-cell-role="th">third visit location</th>
+<th data-quarto-table-cell-role="th">third visit cost</th>
+<th data-quarto-table-cell-role="th">Health sys delay (in days)</th>
+<th data-quarto-table-cell-role="th">Treatment initiation delay (in days)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>100202</td>
+<td>Male</td>
+<td>57</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>58.0</td>
+<td>165.0</td>
+<td>21.3</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>GH</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>15.0</td>
+<td>10.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>100396</td>
+<td>Female</td>
+<td>66</td>
+<td>No Education</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>32.0</td>
+<td>163.0</td>
+<td>12.0</td>
+<td>...</td>
+<td>Ini smear -</td>
+<td>Positive</td>
+<td>Pvt. docto</td>
+<td>1500</td>
+<td>Pvt. clini</td>
+<td>1000</td>
+<td>Pvt. hospi</td>
+<td>2500</td>
+<td>60.0</td>
+<td>4.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>100590</td>
+<td>Female</td>
+<td>45</td>
+<td>Missing</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.0</td>
+<td>150.0</td>
+<td>20.4</td>
+<td>...</td>
+<td>Ini smear -</td>
+<td>Positive</td>
+<td>Pvt. docto</td>
+<td>2000</td>
+<td>Pvt. docto</td>
+<td>3000</td>
+<td>PHC</td>
+<td>0</td>
+<td>43.0</td>
+<td>21.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>100687</td>
+<td>Male</td>
+<td>27</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>51.0</td>
+<td>165.0</td>
+<td>18.7</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>Pvt. hospi</td>
+<td>20000</td>
+<td>Pvt. hospi</td>
+<td>1500</td>
+<td>PHC</td>
+<td>0</td>
+<td>35.0</td>
+<td>5.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>100784</td>
+<td>Male</td>
+<td>54</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>39.0</td>
+<td>160.0</td>
+<td>15.2</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>Positive</td>
+<td>Pvt. docto</td>
+<td>1000</td>
+<td>GH</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>6.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">875</td>
+<td>1604672</td>
+<td>Male</td>
+<td>44</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>42.7</td>
+<td>175.0</td>
+<td>13.9</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>Pvt. docto</td>
+<td>9000</td>
+<td>Pvt. docto</td>
+<td>800</td>
+<td>GH</td>
+<td>0</td>
+<td>14.0</td>
+<td>11.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">876</td>
+<td>1604769</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>64.2</td>
+<td>175.0</td>
+<td>21.0</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>Positive</td>
+<td>Pvt. clini</td>
+<td>500</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>10.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">877</td>
+<td>1604866</td>
+<td>Male</td>
+<td>63</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>Yes</td>
+<td>38.5</td>
+<td>160.0</td>
+<td>15.0</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>Pvt. docto</td>
+<td>1000</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>180.0</td>
+<td>22.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">878</td>
+<td>1604963</td>
+<td>Male</td>
+<td>65</td>
+<td>No Education</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>37.0</td>
+<td>167.0</td>
+<td>13.3</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>PHC</td>
+<td>0</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>150.0</td>
+<td>20.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">879</td>
+<td>1605060</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.8</td>
+<td>155.5</td>
+<td>19.4</td>
+<td>...</td>
+<td>Missing</td>
+<td>Positive</td>
+<td>Pvt. hospi</td>
+<td>300</td>
+<td>Pvt. clini</td>
+<td>3200</td>
+<td>GH</td>
+<td>0</td>
+<td>90.0</td>
+<td>2.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>880 rows × 21 columns</p>
+</div>
+</div>
+</div>
+<p>Run the following line of code to convert all column names to lowercase and replace spaces with underscores:</p>
+<div id="4f3211b7" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tb.columns <span class="op">=</span> tb.columns.<span class="bu">str</span>.lower().<span class="bu">str</span>.replace(<span class="st">' '</span>, <span class="st">'_'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">education</th>
+<th data-quarto-table-cell-role="th">employment</th>
+<th data-quarto-table-cell-role="th">alcohol</th>
+<th data-quarto-table-cell-role="th">smoking</th>
+<th data-quarto-table-cell-role="th">wtinkgs</th>
+<th data-quarto-table-cell-role="th">htincms</th>
+<th data-quarto-table-cell-role="th">bmi</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">form_of_tb</th>
+<th data-quarto-table-cell-role="th">chext_xray</th>
+<th data-quarto-table-cell-role="th">first_visit_location</th>
+<th data-quarto-table-cell-role="th">first_visit_cost</th>
+<th data-quarto-table-cell-role="th">second_visit_location</th>
+<th data-quarto-table-cell-role="th">second_visit_cost</th>
+<th data-quarto-table-cell-role="th">third_visit_location</th>
+<th data-quarto-table-cell-role="th">third_visit_cost</th>
+<th data-quarto-table-cell-role="th">health_sys_delay_(in_days)</th>
+<th data-quarto-table-cell-role="th">treatment_initiation_delay_(in_days)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>100202</td>
+<td>Male</td>
+<td>57</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>58.0</td>
+<td>165.0</td>
+<td>21.3</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>GH</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>15.0</td>
+<td>10.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>100396</td>
+<td>Female</td>
+<td>66</td>
+<td>No Education</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>32.0</td>
+<td>163.0</td>
+<td>12.0</td>
+<td>...</td>
+<td>Ini smear -</td>
+<td>Positive</td>
+<td>Pvt. docto</td>
+<td>1500</td>
+<td>Pvt. clini</td>
+<td>1000</td>
+<td>Pvt. hospi</td>
+<td>2500</td>
+<td>60.0</td>
+<td>4.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>100590</td>
+<td>Female</td>
+<td>45</td>
+<td>Missing</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.0</td>
+<td>150.0</td>
+<td>20.4</td>
+<td>...</td>
+<td>Ini smear -</td>
+<td>Positive</td>
+<td>Pvt. docto</td>
+<td>2000</td>
+<td>Pvt. docto</td>
+<td>3000</td>
+<td>PHC</td>
+<td>0</td>
+<td>43.0</td>
+<td>21.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>100687</td>
+<td>Male</td>
+<td>27</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>51.0</td>
+<td>165.0</td>
+<td>18.7</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>Pvt. hospi</td>
+<td>20000</td>
+<td>Pvt. hospi</td>
+<td>1500</td>
+<td>PHC</td>
+<td>0</td>
+<td>35.0</td>
+<td>5.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>100784</td>
+<td>Male</td>
+<td>54</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>39.0</td>
+<td>160.0</td>
+<td>15.2</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>Positive</td>
+<td>Pvt. docto</td>
+<td>1000</td>
+<td>GH</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>6.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">875</td>
+<td>1604672</td>
+<td>Male</td>
+<td>44</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>42.7</td>
+<td>175.0</td>
+<td>13.9</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>Pvt. docto</td>
+<td>9000</td>
+<td>Pvt. docto</td>
+<td>800</td>
+<td>GH</td>
+<td>0</td>
+<td>14.0</td>
+<td>11.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">876</td>
+<td>1604769</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>64.2</td>
+<td>175.0</td>
+<td>21.0</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>Positive</td>
+<td>Pvt. clini</td>
+<td>500</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>10.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">877</td>
+<td>1604866</td>
+<td>Male</td>
+<td>63</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>Yes</td>
+<td>38.5</td>
+<td>160.0</td>
+<td>15.0</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>Pvt. docto</td>
+<td>1000</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>180.0</td>
+<td>22.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">878</td>
+<td>1604963</td>
+<td>Male</td>
+<td>65</td>
+<td>No Education</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>37.0</td>
+<td>167.0</td>
+<td>13.3</td>
+<td>...</td>
+<td>Ini smear +</td>
+<td>NaN</td>
+<td>PHC</td>
+<td>0</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>150.0</td>
+<td>20.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">879</td>
+<td>1605060</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.8</td>
+<td>155.5</td>
+<td>19.4</td>
+<td>...</td>
+<td>Missing</td>
+<td>Positive</td>
+<td>Pvt. hospi</td>
+<td>300</td>
+<td>Pvt. clini</td>
+<td>3200</td>
+<td>GH</td>
+<td>0</td>
+<td>90.0</td>
+<td>2.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>880 rows × 21 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="calculate-total-cost" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-total-cost">Calculate Total Cost</h3>
+<p>Each patient record notes the location and cost of up to three visits. Add together these costs (<code>first_visit_cost</code>, <code>second_visit_cost</code>, and <code>third_visit_cost</code>) to create a <code>total_cost</code> variable.</p>
+<div id="31c69d8b" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate total cost</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"total_cost"</span>] <span class="op">=</span> (</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    tb[<span class="st">"first_visit_cost"</span>] <span class="op">+</span> tb[<span class="st">"second_visit_cost"</span>] <span class="op">+</span> tb[<span class="st">"third_visit_cost"</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">education</th>
+<th data-quarto-table-cell-role="th">employment</th>
+<th data-quarto-table-cell-role="th">alcohol</th>
+<th data-quarto-table-cell-role="th">smoking</th>
+<th data-quarto-table-cell-role="th">wtinkgs</th>
+<th data-quarto-table-cell-role="th">htincms</th>
+<th data-quarto-table-cell-role="th">bmi</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">chext_xray</th>
+<th data-quarto-table-cell-role="th">first_visit_location</th>
+<th data-quarto-table-cell-role="th">first_visit_cost</th>
+<th data-quarto-table-cell-role="th">second_visit_location</th>
+<th data-quarto-table-cell-role="th">second_visit_cost</th>
+<th data-quarto-table-cell-role="th">third_visit_location</th>
+<th data-quarto-table-cell-role="th">third_visit_cost</th>
+<th data-quarto-table-cell-role="th">health_sys_delay_(in_days)</th>
+<th data-quarto-table-cell-role="th">treatment_initiation_delay_(in_days)</th>
+<th data-quarto-table-cell-role="th">total_cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>100202</td>
+<td>Male</td>
+<td>57</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>58.0</td>
+<td>165.0</td>
+<td>21.3</td>
+<td>...</td>
+<td>NaN</td>
+<td>GH</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>15.0</td>
+<td>10.0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>100396</td>
+<td>Female</td>
+<td>66</td>
+<td>No Education</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>32.0</td>
+<td>163.0</td>
+<td>12.0</td>
+<td>...</td>
+<td>Positive</td>
+<td>Pvt. docto</td>
+<td>1500</td>
+<td>Pvt. clini</td>
+<td>1000</td>
+<td>Pvt. hospi</td>
+<td>2500</td>
+<td>60.0</td>
+<td>4.0</td>
+<td>5000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>100590</td>
+<td>Female</td>
+<td>45</td>
+<td>Missing</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.0</td>
+<td>150.0</td>
+<td>20.4</td>
+<td>...</td>
+<td>Positive</td>
+<td>Pvt. docto</td>
+<td>2000</td>
+<td>Pvt. docto</td>
+<td>3000</td>
+<td>PHC</td>
+<td>0</td>
+<td>43.0</td>
+<td>21.0</td>
+<td>5000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>100687</td>
+<td>Male</td>
+<td>27</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>51.0</td>
+<td>165.0</td>
+<td>18.7</td>
+<td>...</td>
+<td>NaN</td>
+<td>Pvt. hospi</td>
+<td>20000</td>
+<td>Pvt. hospi</td>
+<td>1500</td>
+<td>PHC</td>
+<td>0</td>
+<td>35.0</td>
+<td>5.0</td>
+<td>21500</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>100784</td>
+<td>Male</td>
+<td>54</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>39.0</td>
+<td>160.0</td>
+<td>15.2</td>
+<td>...</td>
+<td>Positive</td>
+<td>Pvt. docto</td>
+<td>1000</td>
+<td>GH</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>6.0</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">875</td>
+<td>1604672</td>
+<td>Male</td>
+<td>44</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>42.7</td>
+<td>175.0</td>
+<td>13.9</td>
+<td>...</td>
+<td>NaN</td>
+<td>Pvt. docto</td>
+<td>9000</td>
+<td>Pvt. docto</td>
+<td>800</td>
+<td>GH</td>
+<td>0</td>
+<td>14.0</td>
+<td>11.0</td>
+<td>9800</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">876</td>
+<td>1604769</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>64.2</td>
+<td>175.0</td>
+<td>21.0</td>
+<td>...</td>
+<td>Positive</td>
+<td>Pvt. clini</td>
+<td>500</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>10.0</td>
+<td>500</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">877</td>
+<td>1604866</td>
+<td>Male</td>
+<td>63</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>Yes</td>
+<td>38.5</td>
+<td>160.0</td>
+<td>15.0</td>
+<td>...</td>
+<td>NaN</td>
+<td>Pvt. docto</td>
+<td>1000</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>180.0</td>
+<td>22.0</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">878</td>
+<td>1604963</td>
+<td>Male</td>
+<td>65</td>
+<td>No Education</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>37.0</td>
+<td>167.0</td>
+<td>13.3</td>
+<td>...</td>
+<td>NaN</td>
+<td>PHC</td>
+<td>0</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>150.0</td>
+<td>20.0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">879</td>
+<td>1605060</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.8</td>
+<td>155.5</td>
+<td>19.4</td>
+<td>...</td>
+<td>Positive</td>
+<td>Pvt. hospi</td>
+<td>300</td>
+<td>Pvt. clini</td>
+<td>3200</td>
+<td>GH</td>
+<td>0</td>
+<td>90.0</td>
+<td>2.0</td>
+<td>3500</td>
+</tr>
+</tbody>
+</table>
+
+<p>880 rows × 22 columns</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="investigating-healthcare-costs-by-education-level" class="level2">
+<h2 class="anchored" data-anchor-id="investigating-healthcare-costs-by-education-level">Investigating Healthcare Costs by Education Level</h2>
+<section id="reorder-education-levels" class="level3">
+<h3 class="anchored" data-anchor-id="reorder-education-levels">Reorder Education Levels</h3>
+<p>Before moving further, let’s take a closer look at the <code>education</code> variable in our dataset:</p>
+<div id="ec98cd7f" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count unique values of education levels</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"education"</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>education
+No Education        273
+Primary             221
+Middle              191
+Secondary           122
+Higher Secondary     52
+Graduate             12
+Missing               6
+Graduate &amp; Above      3
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>You’ll notice that education levels are ordered alphabetically by default! However, in this case, it would be more useful to reorder the education levels so that they are arranged in a chronological order.</p>
+<p>First, use the <code>replace()</code> method to convert the “Graduate &amp; Above” values to “Graduate”.</p>
+<div id="102bc51b" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"education"</span>] <span class="op">=</span> tb[<span class="st">"education"</span>].replace({<span class="st">"Graduate &amp; Above"</span> : <span class="st">"Graduate"</span>})</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"education"</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>education
+No Education        273
+Primary             221
+Middle              191
+Secondary           122
+Higher Secondary     52
+Graduate             15
+Missing               6
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>Now, run the code below to reorder the education levels by converting the <code>education</code> variable into a categorical variable with the levels defined in a specific order:</p>
+<div id="a05696eb" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>education_levels <span class="op">=</span> [</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"No Education"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Primary"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Middle"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Secondary"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Higher Secondary"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Graduate"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Missing"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"education"</span>] <span class="op">=</span> pd.Categorical(</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    tb[<span class="st">"education"</span>], categories<span class="op">=</span>education_levels, ordered<span class="op">=</span><span class="va">True</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, inspect the <code>education</code> variable again to make sure it has been reordered correctly:</p>
+<div id="0cde8820" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"education"</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>education
+No Education        273
+Primary             221
+Middle              191
+Secondary           122
+Higher Secondary     52
+Graduate             15
+Missing               6
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>We will use the newly transformed <code>education</code> variable for grouping, summarizing, and plotting below.</p>
+</section>
+<section id="table-of-costs-by-education-level" class="level3">
+<h3 class="anchored" data-anchor-id="table-of-costs-by-education-level">Table of Costs by Education Level</h3>
+<p>Let’s compare the cost of treatment at different health facilities using a summary table. Use pandas methods to group by education level and create a summary table with two variables:</p>
+<ul>
+<li>The number of patients in each education level</li>
+<li>The mean total cost for each education level</li>
+</ul>
+<p>Store the resulting DataFrame as an object called <code>edu_cost_table</code>.</p>
+<div id="dea178f3" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary table</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>edu_cost_table <span class="op">=</span> (</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    tb.groupby(<span class="st">"education"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    .agg(num_patients<span class="op">=</span>(<span class="st">"education"</span>, <span class="st">"size"</span>), mean_cost<span class="op">=</span>(<span class="st">"total_cost"</span>, <span class="st">"mean"</span>))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>edu_cost_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\ester.nepolo.GFP-PMU\AppData\Local\Temp\ipykernel_14224\135483425.py:3: FutureWarning:
+
+The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">education</th>
+<th data-quarto-table-cell-role="th">num_patients</th>
+<th data-quarto-table-cell-role="th">mean_cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>No Education</td>
+<td>273</td>
+<td>1527.435897</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Primary</td>
+<td>221</td>
+<td>1543.574661</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Middle</td>
+<td>191</td>
+<td>1988.638743</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Secondary</td>
+<td>122</td>
+<td>2135.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Higher Secondary</td>
+<td>52</td>
+<td>1869.230769</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>Graduate</td>
+<td>15</td>
+<td>3226.666667</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>Missing</td>
+<td>6</td>
+<td>1766.666667</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Reorder the rows of the summary table to go from highest to lowest mean cost. You can use the <code>sort_values()</code> method to do this.</p>
+<div id="201cdeb9" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder summary table</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>edu_cost_table <span class="op">=</span> edu_cost_table.sort_values(<span class="st">"mean_cost"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>edu_cost_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">education</th>
+<th data-quarto-table-cell-role="th">num_patients</th>
+<th data-quarto-table-cell-role="th">mean_cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>Graduate</td>
+<td>15</td>
+<td>3226.666667</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Secondary</td>
+<td>122</td>
+<td>2135.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Middle</td>
+<td>191</td>
+<td>1988.638743</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Higher Secondary</td>
+<td>52</td>
+<td>1869.230769</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>Missing</td>
+<td>6</td>
+<td>1766.666667</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Primary</td>
+<td>221</td>
+<td>1543.574661</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>No Education</td>
+<td>273</td>
+<td>1527.435897</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Which education level has the highest mean total cost of treatment?</p>
+<p><strong>Graduate level has the highest mean total cost of treatment.</strong></p>
+<p>Below, we will visualize the data with a plot to see if there is a relationship between education level and healthcare costs.</p>
+</section>
+<section id="visualize-costs-by-education-level" class="level3">
+<h3 class="anchored" data-anchor-id="visualize-costs-by-education-level">Visualize Costs by Education Level</h3>
+<p>Using <code>plotly.express</code> and the costs summary table you created earlier, create a bar plot of mean costs by education level. It should be sorted from lowest education level to highest education level.</p>
+<div id="1f426406" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>edu_cost_table <span class="op">=</span> edu_cost_table.sort_values(<span class="st">"mean_cost"</span>, ascending<span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>edu_cost_table</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.bar( edu_cost_table, x<span class="op">=</span><span class="st">"education"</span>, y<span class="op">=</span><span class="st">"mean_cost"</span>, category_orders<span class="op">=</span>{<span class="st">"education"</span> : education_levels},</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>title<span class="op">=</span><span class="st">"Mean Cost by Educational Level"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"education"</span>: <span class="st">"Level of Education"</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_cost"</span>: <span class="st">"Mean Cost"</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>                            <div id="1d618296-fb23-4674-8a5a-e29cfc1f57bf" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("1d618296-fb23-4674-8a5a-e29cfc1f57bf")) {                    Plotly.newPlot(                        "1d618296-fb23-4674-8a5a-e29cfc1f57bf",                        [{"alignmentgroup":"True","hovertemplate":"Level of Education=%{x}\u003cbr\u003eMean Cost=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"v","showlegend":false,"textposition":"auto","x":["No Education","Primary","Missing","Higher Secondary","Middle","Secondary","Graduate"],"xaxis":"x","y":[1527.4358974358975,1543.5746606334842,1766.6666666666667,1869.2307692307693,1988.6387434554974,2135.0,3226.6666666666665],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Level of Education"},"categoryorder":"array","categoryarray":["No Education","Primary","Middle","Secondary","Higher Secondary","Graduate","Missing"]},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Mean Cost"}},"legend":{"tracegroupgap":0},"title":{"text":"Mean Cost by Educational Level"},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('1d618296-fb23-4674-8a5a-e29cfc1f57bf');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<p>Write a short interpretation of the plot.</p>
+<p>There appears to be a relationship between education level and healthcare costs. Higher education levels, particularly for graduates, are associated with higher mean healthcare costs, while lower education levels, such as “No Education” or “Primary,” correspond to lower mean costs. This suggests that individuals with higher education levels may incur more healthcare costs on average.</p>
+</section>
+</section>
+<section id="investigating-healthcare-costs-by-age-group" class="level2">
+<h2 class="anchored" data-anchor-id="investigating-healthcare-costs-by-age-group">Investigating Healthcare Costs by Age Group</h2>
+<section id="create-an-age_group-variable" class="level3">
+<h3 class="anchored" data-anchor-id="create-an-age_group-variable">Create an <code>age_group</code> Variable</h3>
+<p>The <code>age</code> variable records the age of each patient in years. We want to classify the patients into four approximately equally-sized age groups for further analysis.</p>
+<p>First, run the code below to determine the quantiles of the <code>age</code> variable to decide the cutoffs for each age group:</p>
+<div id="61c8f9c2" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine quantiles of age</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"age"</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>count    880.000000
+mean      46.668182
+std       14.165329
+min       18.000000
+25%       37.000000
+50%       48.000000
+75%       58.000000
+max       88.000000
+Name: age, dtype: float64</code></pre>
+</div>
+</div>
+<p>Based on the quantile markers (min, 25%, 50%, 75%, max), we can note the following four age groups with approximately equal numbers of patients:</p>
+<ul>
+<li>18-36</li>
+<li>37-47</li>
+<li>48-57</li>
+<li>58+</li>
+</ul>
+<p>Use a custom function called <code>assign_age_group()</code>, then vectorize it using <code>np.vectorize()</code> and apply it to the <code>age</code> variable to create an <code>age_group</code> variable.</p>
+<p>(If you prefer, you can also use <code>pd.cut()</code> to create the <code>age_group</code> variable.)</p>
+<div id="9a54fd95" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> age_group(age):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> age <span class="op">&gt;=</span> <span class="dv">18</span> <span class="kw">and</span> age <span class="op">&lt;=</span> <span class="dv">36</span>:</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"18 - 36"</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> age <span class="op">&gt;=</span> <span class="dv">37</span> <span class="kw">and</span> age <span class="op">&lt;=</span> <span class="dv">47</span>:</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"37 - 47"</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> age <span class="op">&gt;=</span> <span class="dv">48</span> <span class="kw">and</span> age <span class="op">&lt;=</span> <span class="dv">57</span>:</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"48 - 57"</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> age <span class="op">&gt;=</span> <span class="dv">58</span>:</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"58+"</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span> </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>assign_age_group <span class="op">=</span> np.vectorize(age_group)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"age_group"</span>] <span class="op">=</span> assign_age_group(tb[<span class="st">"age"</span>])</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">education</th>
+<th data-quarto-table-cell-role="th">employment</th>
+<th data-quarto-table-cell-role="th">alcohol</th>
+<th data-quarto-table-cell-role="th">smoking</th>
+<th data-quarto-table-cell-role="th">wtinkgs</th>
+<th data-quarto-table-cell-role="th">htincms</th>
+<th data-quarto-table-cell-role="th">bmi</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">first_visit_location</th>
+<th data-quarto-table-cell-role="th">first_visit_cost</th>
+<th data-quarto-table-cell-role="th">second_visit_location</th>
+<th data-quarto-table-cell-role="th">second_visit_cost</th>
+<th data-quarto-table-cell-role="th">third_visit_location</th>
+<th data-quarto-table-cell-role="th">third_visit_cost</th>
+<th data-quarto-table-cell-role="th">health_sys_delay_(in_days)</th>
+<th data-quarto-table-cell-role="th">treatment_initiation_delay_(in_days)</th>
+<th data-quarto-table-cell-role="th">total_cost</th>
+<th data-quarto-table-cell-role="th">age_group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>100202</td>
+<td>Male</td>
+<td>57</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>58.0</td>
+<td>165.0</td>
+<td>21.3</td>
+<td>...</td>
+<td>GH</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>15.0</td>
+<td>10.0</td>
+<td>0</td>
+<td>48 - 57</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>100396</td>
+<td>Female</td>
+<td>66</td>
+<td>No Education</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>32.0</td>
+<td>163.0</td>
+<td>12.0</td>
+<td>...</td>
+<td>Pvt. docto</td>
+<td>1500</td>
+<td>Pvt. clini</td>
+<td>1000</td>
+<td>Pvt. hospi</td>
+<td>2500</td>
+<td>60.0</td>
+<td>4.0</td>
+<td>5000</td>
+<td>58+</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>100590</td>
+<td>Female</td>
+<td>45</td>
+<td>Missing</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.0</td>
+<td>150.0</td>
+<td>20.4</td>
+<td>...</td>
+<td>Pvt. docto</td>
+<td>2000</td>
+<td>Pvt. docto</td>
+<td>3000</td>
+<td>PHC</td>
+<td>0</td>
+<td>43.0</td>
+<td>21.0</td>
+<td>5000</td>
+<td>37 - 47</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>100687</td>
+<td>Male</td>
+<td>27</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>51.0</td>
+<td>165.0</td>
+<td>18.7</td>
+<td>...</td>
+<td>Pvt. hospi</td>
+<td>20000</td>
+<td>Pvt. hospi</td>
+<td>1500</td>
+<td>PHC</td>
+<td>0</td>
+<td>35.0</td>
+<td>5.0</td>
+<td>21500</td>
+<td>18 - 36</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>100784</td>
+<td>Male</td>
+<td>54</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>39.0</td>
+<td>160.0</td>
+<td>15.2</td>
+<td>...</td>
+<td>Pvt. docto</td>
+<td>1000</td>
+<td>GH</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>6.0</td>
+<td>1000</td>
+<td>48 - 57</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">875</td>
+<td>1604672</td>
+<td>Male</td>
+<td>44</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>42.7</td>
+<td>175.0</td>
+<td>13.9</td>
+<td>...</td>
+<td>Pvt. docto</td>
+<td>9000</td>
+<td>Pvt. docto</td>
+<td>800</td>
+<td>GH</td>
+<td>0</td>
+<td>14.0</td>
+<td>11.0</td>
+<td>9800</td>
+<td>37 - 47</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">876</td>
+<td>1604769</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>64.2</td>
+<td>175.0</td>
+<td>21.0</td>
+<td>...</td>
+<td>Pvt. clini</td>
+<td>500</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>10.0</td>
+<td>500</td>
+<td>58+</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">877</td>
+<td>1604866</td>
+<td>Male</td>
+<td>63</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>Yes</td>
+<td>38.5</td>
+<td>160.0</td>
+<td>15.0</td>
+<td>...</td>
+<td>Pvt. docto</td>
+<td>1000</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>180.0</td>
+<td>22.0</td>
+<td>1000</td>
+<td>58+</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">878</td>
+<td>1604963</td>
+<td>Male</td>
+<td>65</td>
+<td>No Education</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>37.0</td>
+<td>167.0</td>
+<td>13.3</td>
+<td>...</td>
+<td>PHC</td>
+<td>0</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>150.0</td>
+<td>20.0</td>
+<td>0</td>
+<td>58+</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">879</td>
+<td>1605060</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.8</td>
+<td>155.5</td>
+<td>19.4</td>
+<td>...</td>
+<td>Pvt. hospi</td>
+<td>300</td>
+<td>Pvt. clini</td>
+<td>3200</td>
+<td>GH</td>
+<td>0</td>
+<td>90.0</td>
+<td>2.0</td>
+<td>3500</td>
+<td>58+</td>
+</tr>
+</tbody>
+</table>
+
+<p>880 rows × 23 columns</p>
+</div>
+</div>
+</div>
+<p>Now, check if we met our goal of having a similar number of patients in each age group using the <code>value_counts()</code> method:</p>
+<div id="372be890" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabulate age groups</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"age_group"</span>].value_counts(normalize<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>age_group
+58+        0.264773
+18 - 36    0.248864
+48 - 57    0.243182
+37 - 47    0.243182
+Name: proportion, dtype: float64</code></pre>
+</div>
+</div>
+<p><strong>Checkpoint:</strong> If you classified the age groups correctly, you will see that each age group has approximately 24-26% of the patients.</p>
+</section>
+<section id="table-of-costs-by-age-group" class="level3">
+<h3 class="anchored" data-anchor-id="table-of-costs-by-age-group">Table of Costs by Age Group</h3>
+<p>Next, summarize the total healthcare costs by age group. Use pandas methods to group by <code>age_group</code> and create a summary table with two variables:</p>
+<ul>
+<li>The number of patients in each age group</li>
+<li>The mean total cost for each age group</li>
+</ul>
+<p>Store the resulting DataFrame as an object called <code>age_cost_table</code>.</p>
+<div id="05ed878c" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary table for age groups</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>age_cost_table <span class="op">=</span> (</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    tb.groupby(<span class="st">"age_group"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    .agg(num_patients<span class="op">=</span>(<span class="st">"age_group"</span>, <span class="st">"size"</span>), mean_cost<span class="op">=</span>(<span class="st">"total_cost"</span>, <span class="st">"mean"</span>))).reset_index()</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>age_cost_table   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">age_group</th>
+<th data-quarto-table-cell-role="th">num_patients</th>
+<th data-quarto-table-cell-role="th">mean_cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>18 - 36</td>
+<td>219</td>
+<td>2141.643836</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>37 - 47</td>
+<td>214</td>
+<td>1799.953271</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>48 - 57</td>
+<td>214</td>
+<td>1219.158879</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>58+</td>
+<td>233</td>
+<td>1886.309013</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="visualize-costs-by-age-group" class="level3">
+<h3 class="anchored" data-anchor-id="visualize-costs-by-age-group">Visualize Costs by Age Group</h3>
+<p>Using <code>plotly.express</code> and the costs summary table you created earlier, create a bar plot of mean costs by age group.</p>
+<div id="b4492cd2" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>plot <span class="op">=</span> px.bar( age_cost_table, x<span class="op">=</span><span class="st">"age_group"</span>, y<span class="op">=</span><span class="st">"mean_cost"</span>,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>title<span class="op">=</span><span class="st">"Mean Cost by Age Group"</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"age_group"</span>: <span class="st">"Age Group"</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_cost"</span>: <span class="st">"Mean Cost"</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>plot.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>                            <div id="223e822e-d646-47d9-a297-53799c5732b6" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("223e822e-d646-47d9-a297-53799c5732b6")) {                    Plotly.newPlot(                        "223e822e-d646-47d9-a297-53799c5732b6",                        [{"alignmentgroup":"True","hovertemplate":"Age Group=%{x}\u003cbr\u003eMean Cost=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"v","showlegend":false,"textposition":"auto","x":["18 - 36","37 - 47","48 - 57","58+"],"xaxis":"x","y":[2141.6438356164385,1799.9532710280373,1219.1588785046729,1886.3090128755364],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Age Group"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Mean Cost"}},"legend":{"tracegroupgap":0},"title":{"text":"Mean Cost by Age Group"},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('223e822e-d646-47d9-a297-53799c5732b6');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<p>Write a short interpretation of the plot.</p>
+<p>The plot suggests that younger adults (ages 18 - 36) have the highest mean cost, while those in the “48 - 57” age group have the lowest. The cost slightly increases again in the “58+” age group. This trend could indicate that younger adults may have higher healthcare expenses, while middle-aged individuals incur lower costs, with a modest rise again in older age.</p>
+</section>
+</section>
+<section id="bonus-challenge-optional-and-ungraded" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-challenge-optional-and-ungraded">Bonus Challenge (Optional and Ungraded)</h2>
+<p>If you finish early and have extra time, you can explore and transform the dataset further.</p>
+<p>We can look at two types of health facilities in the dataset: private and public (government).</p>
+<div id="ae36b14c" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List of healthcare locations</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">"first_visit_location"</span>].unique()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>array(['GH', 'Pvt. docto', 'Pvt. hospi', 'T.Govt', 'PHC', 'Pvt. clini',
+       'Tambram sanatorium', 'T.Pvt', 'Other'], dtype=object)</code></pre>
+</div>
+</div>
+<p>Note: PHC = primary health center, GH = govt hospital, etc.</p>
+<section id="comparing-delays-in-public-vs-private-health-facilities" class="level3">
+<h3 class="anchored" data-anchor-id="comparing-delays-in-public-vs-private-health-facilities">Comparing Delays in Public vs Private Health Facilities</h3>
+<p>Let’s create a new variable indicating whether a healthcare location is private or public. We can do this using the <code>str.contains()</code> function from pandas.</p>
+<div id="b50b3aeb" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tb[<span class="st">'first_visit_type'</span>] <span class="op">=</span> np.where(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    tb[<span class="st">'first_visit_location'</span>].<span class="bu">str</span>.contains(<span class="st">'Pvt'</span>),</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Private'</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Public'</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">education</th>
+<th data-quarto-table-cell-role="th">employment</th>
+<th data-quarto-table-cell-role="th">alcohol</th>
+<th data-quarto-table-cell-role="th">smoking</th>
+<th data-quarto-table-cell-role="th">wtinkgs</th>
+<th data-quarto-table-cell-role="th">htincms</th>
+<th data-quarto-table-cell-role="th">bmi</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">first_visit_cost</th>
+<th data-quarto-table-cell-role="th">second_visit_location</th>
+<th data-quarto-table-cell-role="th">second_visit_cost</th>
+<th data-quarto-table-cell-role="th">third_visit_location</th>
+<th data-quarto-table-cell-role="th">third_visit_cost</th>
+<th data-quarto-table-cell-role="th">health_sys_delay_(in_days)</th>
+<th data-quarto-table-cell-role="th">treatment_initiation_delay_(in_days)</th>
+<th data-quarto-table-cell-role="th">total_cost</th>
+<th data-quarto-table-cell-role="th">age_group</th>
+<th data-quarto-table-cell-role="th">first_visit_type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>100202</td>
+<td>Male</td>
+<td>57</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>58.0</td>
+<td>165.0</td>
+<td>21.3</td>
+<td>...</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>15.0</td>
+<td>10.0</td>
+<td>0</td>
+<td>48 - 57</td>
+<td>Public</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>100396</td>
+<td>Female</td>
+<td>66</td>
+<td>No Education</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>32.0</td>
+<td>163.0</td>
+<td>12.0</td>
+<td>...</td>
+<td>1500</td>
+<td>Pvt. clini</td>
+<td>1000</td>
+<td>Pvt. hospi</td>
+<td>2500</td>
+<td>60.0</td>
+<td>4.0</td>
+<td>5000</td>
+<td>58+</td>
+<td>Private</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>100590</td>
+<td>Female</td>
+<td>45</td>
+<td>Missing</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.0</td>
+<td>150.0</td>
+<td>20.4</td>
+<td>...</td>
+<td>2000</td>
+<td>Pvt. docto</td>
+<td>3000</td>
+<td>PHC</td>
+<td>0</td>
+<td>43.0</td>
+<td>21.0</td>
+<td>5000</td>
+<td>37 - 47</td>
+<td>Private</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>100687</td>
+<td>Male</td>
+<td>27</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>51.0</td>
+<td>165.0</td>
+<td>18.7</td>
+<td>...</td>
+<td>20000</td>
+<td>Pvt. hospi</td>
+<td>1500</td>
+<td>PHC</td>
+<td>0</td>
+<td>35.0</td>
+<td>5.0</td>
+<td>21500</td>
+<td>18 - 36</td>
+<td>Private</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>100784</td>
+<td>Male</td>
+<td>54</td>
+<td>Middle</td>
+<td>Non - Working</td>
+<td>No</td>
+<td>No</td>
+<td>39.0</td>
+<td>160.0</td>
+<td>15.2</td>
+<td>...</td>
+<td>1000</td>
+<td>GH</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>6.0</td>
+<td>1000</td>
+<td>48 - 57</td>
+<td>Private</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">875</td>
+<td>1604672</td>
+<td>Male</td>
+<td>44</td>
+<td>Middle</td>
+<td>Working</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>42.7</td>
+<td>175.0</td>
+<td>13.9</td>
+<td>...</td>
+<td>9000</td>
+<td>Pvt. docto</td>
+<td>800</td>
+<td>GH</td>
+<td>0</td>
+<td>14.0</td>
+<td>11.0</td>
+<td>9800</td>
+<td>37 - 47</td>
+<td>Private</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">876</td>
+<td>1604769</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>64.2</td>
+<td>175.0</td>
+<td>21.0</td>
+<td>...</td>
+<td>500</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>14.0</td>
+<td>10.0</td>
+<td>500</td>
+<td>58+</td>
+<td>Private</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">877</td>
+<td>1604866</td>
+<td>Male</td>
+<td>63</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>Yes</td>
+<td>38.5</td>
+<td>160.0</td>
+<td>15.0</td>
+<td>...</td>
+<td>1000</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>180.0</td>
+<td>22.0</td>
+<td>1000</td>
+<td>58+</td>
+<td>Private</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">878</td>
+<td>1604963</td>
+<td>Male</td>
+<td>65</td>
+<td>No Education</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>37.0</td>
+<td>167.0</td>
+<td>13.3</td>
+<td>...</td>
+<td>0</td>
+<td>Tambram Sanatorium</td>
+<td>0</td>
+<td>NaN</td>
+<td>0</td>
+<td>150.0</td>
+<td>20.0</td>
+<td>0</td>
+<td>58+</td>
+<td>Public</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">879</td>
+<td>1605060</td>
+<td>Male</td>
+<td>60</td>
+<td>Middle</td>
+<td>Working</td>
+<td>No</td>
+<td>No</td>
+<td>46.8</td>
+<td>155.5</td>
+<td>19.4</td>
+<td>...</td>
+<td>300</td>
+<td>Pvt. clini</td>
+<td>3200</td>
+<td>GH</td>
+<td>0</td>
+<td>90.0</td>
+<td>2.0</td>
+<td>3500</td>
+<td>58+</td>
+<td>Private</td>
+</tr>
+</tbody>
+</table>
+
+<p>880 rows × 24 columns</p>
+</div>
+</div>
+</div>
+<p>Inspect the new variable in <code>tb</code>.</p>
+<p>Your assignment for this challenge is to summarize delays in treatment and compare the length of delays between private and public health facilities.</p>
+<p>You can start by making a summary table of <code>treatment_initiation_delay_in_days</code>, grouped by <code>first_visit_type</code>. Then visualize the data and draw insights from your findings.</p>
+<div id="97056698" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary table of treatment initiation delays in days</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>treatment_init_delays_table <span class="op">=</span> (</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    tb.groupby(<span class="st">"first_visit_type"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        num_patients<span class="op">=</span>(<span class="st">"first_visit_type"</span>, <span class="st">"size"</span>),</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        mean_treatment_initiation_delay_in_days<span class="op">=</span>(<span class="st">"treatment_initiation_delay_(in_days)"</span>, <span class="st">"mean"</span>),</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        median_treatment_initiation_delay_in_days<span class="op">=</span>(<span class="st">"treatment_initiation_delay_(in_days)"</span>, <span class="st">"median"</span>),</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        min_treatment_initiation_delay_in_days<span class="op">=</span>(<span class="st">"treatment_initiation_delay_(in_days)"</span>, <span class="st">"min"</span>),</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        max_treatment_initiation_delay_in_days<span class="op">=</span>(<span class="st">"treatment_initiation_delay_(in_days)"</span>, <span class="st">"max"</span>),</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        std_treatment_initiation_delay_in_days<span class="op">=</span>(<span class="st">"treatment_initiation_delay_(in_days)"</span>, <span class="st">"std"</span>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>).reset_index()</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>treatment_init_delays_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">first_visit_type</th>
+<th data-quarto-table-cell-role="th">num_patients</th>
+<th data-quarto-table-cell-role="th">mean_treatment_initiation_delay_in_days</th>
+<th data-quarto-table-cell-role="th">median_treatment_initiation_delay_in_days</th>
+<th data-quarto-table-cell-role="th">min_treatment_initiation_delay_in_days</th>
+<th data-quarto-table-cell-role="th">max_treatment_initiation_delay_in_days</th>
+<th data-quarto-table-cell-role="th">std_treatment_initiation_delay_in_days</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Private</td>
+<td>569</td>
+<td>8.432099</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>110.0</td>
+<td>10.858969</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Public</td>
+<td>311</td>
+<td>9.270968</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>55.0</td>
+<td>8.665529</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="7d683d87" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fig_box <span class="op">=</span> px.box(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    tb, </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"first_visit_type"</span>, </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"treatment_initiation_delay_(in_days)"</span>, </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Boxplot of Treatment Initiation Delay by Facility Type"</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"first_visit_type"</span>,  <span class="co"># This adds color differentiation based on the visit type</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">"first_visit_type"</span>: <span class="st">"Facility Type"</span>, <span class="st">"treatment_initiation_delay_(in_days)"</span>: <span class="st">"Treatment Initiation Delay (Days)"</span>}</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>fig_box.update_xaxes(tickangle<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>fig_box.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>                            <div id="807c4db1-e544-4931-9b0e-f15b0fdfe131" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("807c4db1-e544-4931-9b0e-f15b0fdfe131")) {                    Plotly.newPlot(                        "807c4db1-e544-4931-9b0e-f15b0fdfe131",                        [{"alignmentgroup":"True","hovertemplate":"Facility Type=%{x}\u003cbr\u003eTreatment Initiation Delay (Days)=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Public","marker":{"color":"#636efa"},"name":"Public","notched":false,"offsetgroup":"Public","orientation":"v","showlegend":true,"x":["Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public"],"x0":" ","xaxis":"x","y":[10.0,3.0,4.0,6.0,6.0,7.0,4.0,18.0,null,1.0,1.0,5.0,7.0,3.0,25.0,15.0,5.0,24.0,55.0,12.0,1.0,2.0,5.0,23.0,2.0,2.0,4.0,9.0,7.0,8.0,1.0,5.0,5.0,1.0,14.0,7.0,22.0,6.0,1.0,5.0,5.0,4.0,3.0,7.0,4.0,22.0,37.0,26.0,12.0,3.0,0.0,3.0,3.0,3.0,9.0,0.0,7.0,7.0,9.0,4.0,4.0,19.0,8.0,7.0,16.0,6.0,3.0,15.0,5.0,3.0,11.0,2.0,6.0,2.0,38.0,20.0,8.0,13.0,2.0,0.0,1.0,13.0,4.0,40.0,5.0,2.0,39.0,2.0,27.0,6.0,5.0,6.0,5.0,5.0,1.0,9.0,3.0,8.0,18.0,10.0,1.0,10.0,11.0,20.0,3.0,16.0,8.0,5.0,15.0,4.0,12.0,2.0,34.0,2.0,15.0,5.0,8.0,24.0,4.0,18.0,0.0,1.0,4.0,6.0,0.0,4.0,4.0,1.0,13.0,4.0,3.0,2.0,4.0,12.0,6.0,7.0,6.0,6.0,10.0,15.0,16.0,9.0,4.0,9.0,5.0,4.0,4.0,7.0,2.0,2.0,21.0,3.0,14.0,0.0,6.0,10.0,4.0,1.0,4.0,1.0,15.0,3.0,14.0,6.0,5.0,6.0,6.0,4.0,5.0,3.0,3.0,1.0,8.0,2.0,6.0,3.0,8.0,3.0,9.0,11.0,9.0,8.0,26.0,25.0,10.0,17.0,21.0,6.0,5.0,11.0,6.0,16.0,15.0,11.0,9.0,18.0,7.0,2.0,8.0,3.0,13.0,21.0,45.0,16.0,10.0,11.0,3.0,4.0,5.0,28.0,5.0,6.0,8.0,3.0,12.0,12.0,2.0,17.0,14.0,0.0,35.0,18.0,2.0,7.0,6.0,7.0,2.0,0.0,8.0,5.0,16.0,0.0,8.0,18.0,4.0,8.0,2.0,0.0,4.0,4.0,4.0,2.0,3.0,6.0,5.0,16.0,0.0,29.0,12.0,31.0,6.0,7.0,20.0,8.0,8.0,5.0,16.0,18.0,12.0,6.0,6.0,8.0,15.0,6.0,1.0,1.0,7.0,30.0,7.0,40.0,7.0,3.0,6.0,3.0,14.0,4.0,27.0,4.0,9.0,12.0,22.0,4.0,5.0,4.0,11.0,18.0,19.0,7.0,13.0,4.0,7.0,16.0,7.0,11.0,38.0,3.0,14.0,14.0,11.0,11.0,14.0,2.0,4.0,19.0,16.0,9.0,2.0,14.0,3.0,8.0,20.0],"y0":" ","yaxis":"y","type":"box"},{"alignmentgroup":"True","hovertemplate":"Facility Type=%{x}\u003cbr\u003eTreatment Initiation Delay (Days)=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Private","marker":{"color":"#EF553B"},"name":"Private","notched":false,"offsetgroup":"Private","orientation":"v","showlegend":true,"x":["Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private"],"x0":" ","xaxis":"x","y":[4.0,21.0,5.0,6.0,10.0,2.0,3.0,3.0,6.0,3.0,1.0,3.0,3.0,1.0,0.0,1.0,7.0,8.0,1.0,9.0,2.0,0.0,5.0,5.0,4.0,2.0,21.0,null,31.0,5.0,4.0,9.0,7.0,8.0,4.0,1.0,36.0,5.0,3.0,4.0,3.0,4.0,43.0,2.0,23.0,31.0,6.0,32.0,3.0,21.0,8.0,7.0,17.0,0.0,10.0,5.0,10.0,4.0,5.0,7.0,7.0,0.0,7.0,50.0,0.0,23.0,6.0,4.0,3.0,5.0,2.0,3.0,3.0,2.0,2.0,5.0,6.0,4.0,1.0,13.0,7.0,21.0,0.0,0.0,1.0,4.0,5.0,13.0,3.0,1.0,1.0,2.0,0.0,4.0,3.0,1.0,7.0,4.0,3.0,12.0,1.0,0.0,4.0,9.0,6.0,5.0,14.0,0.0,5.0,10.0,9.0,0.0,0.0,14.0,1.0,0.0,35.0,2.0,2.0,0.0,10.0,7.0,5.0,6.0,2.0,1.0,4.0,1.0,3.0,0.0,7.0,6.0,4.0,4.0,0.0,2.0,6.0,2.0,6.0,2.0,2.0,9.0,10.0,1.0,12.0,4.0,3.0,8.0,31.0,12.0,7.0,16.0,35.0,6.0,4.0,0.0,11.0,3.0,14.0,25.0,2.0,0.0,3.0,3.0,15.0,2.0,7.0,5.0,4.0,1.0,5.0,5.0,9.0,0.0,9.0,19.0,4.0,2.0,6.0,5.0,3.0,7.0,20.0,14.0,3.0,110.0,2.0,9.0,13.0,59.0,1.0,8.0,5.0,7.0,10.0,9.0,1.0,3.0,38.0,2.0,2.0,5.0,9.0,3.0,7.0,1.0,4.0,10.0,7.0,2.0,4.0,6.0,3.0,7.0,1.0,4.0,2.0,6.0,8.0,1.0,3.0,9.0,1.0,3.0,4.0,1.0,8.0,5.0,4.0,6.0,3.0,7.0,2.0,11.0,9.0,3.0,2.0,3.0,10.0,1.0,4.0,12.0,6.0,5.0,13.0,1.0,5.0,3.0,1.0,4.0,2.0,3.0,3.0,22.0,15.0,20.0,4.0,13.0,30.0,10.0,8.0,5.0,9.0,10.0,8.0,4.0,7.0,2.0,4.0,4.0,2.0,4.0,3.0,5.0,13.0,3.0,5.0,7.0,11.0,5.0,4.0,2.0,4.0,3.0,5.0,3.0,11.0,6.0,15.0,4.0,2.0,1.0,2.0,7.0,6.0,3.0,5.0,1.0,3.0,4.0,11.0,12.0,4.0,8.0,3.0,10.0,3.0,5.0,1.0,1.0,5.0,10.0,6.0,6.0,0.0,5.0,5.0,1.0,3.0,2.0,11.0,6.0,4.0,2.0,20.0,7.0,1.0,2.0,11.0,3.0,1.0,7.0,13.0,5.0,8.0,2.0,16.0,2.0,16.0,2.0,5.0,13.0,2.0,3.0,3.0,7.0,9.0,3.0,4.0,14.0,1.0,2.0,20.0,7.0,3.0,5.0,4.0,2.0,3.0,4.0,1.0,1.0,5.0,7.0,7.0,17.0,9.0,41.0,5.0,13.0,3.0,2.0,98.0,4.0,6.0,2.0,36.0,5.0,4.0,18.0,15.0,8.0,14.0,3.0,5.0,6.0,55.0,5.0,2.0,65.0,10.0,7.0,11.0,24.0,20.0,11.0,7.0,40.0,5.0,15.0,9.0,8.0,9.0,3.0,6.0,1.0,4.0,4.0,11.0,58.0,5.0,35.0,28.0,13.0,9.0,3.0,8.0,7.0,11.0,17.0,7.0,1.0,14.0,17.0,53.0,17.0,2.0,3.0,19.0,7.0,14.0,7.0,2.0,4.0,0.0,26.0,9.0,6.0,5.0,37.0,1.0,18.0,11.0,2.0,9.0,0.0,0.0,33.0,6.0,8.0,7.0,3.0,1.0,4.0,5.0,14.0,7.0,null,5.0,20.0,1.0,15.0,4.0,32.0,9.0,1.0,16.0,35.0,1.0,4.0,3.0,1.0,2.0,0.0,7.0,25.0,12.0,7.0,4.0,20.0,0.0,8.0,3.0,10.0,10.0,10.0,1.0,2.0,1.0,9.0,8.0,6.0,42.0,7.0,5.0,4.0,3.0,8.0,7.0,13.0,12.0,0.0,12.0,6.0,15.0,14.0,2.0,23.0,9.0,28.0,1.0,3.0,1.0,20.0,54.0,5.0,9.0,5.0,7.0,12.0,11.0,0.0,8.0,8.0,3.0,3.0,7.0,4.0,13.0,20.0,12.0,5.0,2.0,2.0,6.0,7.0,13.0,4.0,20.0,5.0,15.0,7.0,9.0,19.0,1.0,6.0,3.0,6.0,16.0,8.0,6.0,2.0,16.0,4.0,2.0,3.0,20.0,10.0,10.0,14.0,10.0,15.0,5.0,7.0,13.0,11.0,10.0,22.0,2.0],"y0":" ","yaxis":"y","type":"box"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Facility Type"},"categoryorder":"array","categoryarray":["Public","Private"],"tickangle":45},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Treatment Initiation Delay (Days)"}},"legend":{"title":{"text":"Facility Type"},"tracegroupgap":0},"title":{"text":"Boxplot of Treatment Initiation Delay by Facility Type"},"boxmode":"overlay"},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('807c4db1-e544-4931-9b0e-f15b0fdfe131');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<p>This boxplot compares treatment initiation delays (in days) between public and private healthcare facilities. Here are some insights we can draw from the plot:</p>
+<p>Median Delay: Both public and private facilities have similar median treatment initiation delays. However, it appears that private facilities might have a slightly shorter median delay than public ones, though the difference is marginal.</p>
+<p>Interquartile Range (IQR): The IQR, representing the middle 50% of the data, is similar for both facility types. This suggests that the typical variation in delays is comparable between public and private facilities.</p>
+<p>Outliers: There are more extreme outliers in the private facility data, with some delays extending well beyond the typical range. This might indicate that while private facilities can be efficient for most patients, certain cases experience significant delays.</p>
+<p>Overall Distribution: The distribution in private facilities shows slightly higher variability, as indicated by a broader spread and more outliers compared to public facilities.</p>
+<p>Interpretation These findings suggest that, on average, both facility types offer similar timelines for treatment initiation. However, certain cases in private facilities may face unexpectedly long delays. This could be due to specific logistical issues, availability of specialized treatments, or patient demographics in private settings. Further investigation into these outlier cases could help identify the root causes of these delays.</p>
+<div id="60fc0c93" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin Plot for Treatment Initiation Delay by Visit Type</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>fig_violin <span class="op">=</span> px.violin(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    tb,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"first_visit_type"</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"treatment_initiation_delay_(in_days)"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    box<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    points<span class="op">=</span><span class="st">"all"</span>,  <span class="co"># Show all points as dots</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Violin Plot of Treatment Initiation Delay by Facility Type"</span>,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"first_visit_type"</span>: <span class="st">"Facility Type"</span>,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"treatment_initiation_delay_(in_days)"</span>: <span class="st">"Treatment Initiation Delay (Days)"</span>,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>fig_violin.update_xaxes(tickangle<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>fig_violin.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>                            <div id="0b18f677-ce01-4bd9-8ab2-7d1170d36a07" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("0b18f677-ce01-4bd9-8ab2-7d1170d36a07")) {                    Plotly.newPlot(                        "0b18f677-ce01-4bd9-8ab2-7d1170d36a07",                        [{"alignmentgroup":"True","box":{"visible":true},"hovertemplate":"Facility Type=%{x}\u003cbr\u003eTreatment Initiation Delay (Days)=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa"},"name":"","offsetgroup":"","orientation":"v","points":"all","scalegroup":"True","showlegend":false,"x":["Public","Private","Private","Private","Private","Private","Private","Public","Public","Public","Private","Private","Private","Private","Public","Public","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Public","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Public","Private","Public","Private","Private","Private","Private","Private","Public","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Public","Public","Public","Public","Private","Public","Private","Private","Public","Private","Public","Private","Private","Private","Private","Private","Public","Private","Public","Private","Public","Private","Public","Public","Public","Private","Private","Public","Private","Private","Public","Public","Public","Private","Private","Private","Private","Public","Public","Private","Public","Private","Public","Public","Private","Private","Private","Public","Private","Public","Private","Private","Private","Public","Private","Private","Private","Private","Public","Private","Public","Public","Public","Public","Private","Private","Private","Private","Private","Public","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Public","Private","Public","Public","Private","Public","Public","Public","Private","Public","Private","Public","Private","Public","Private","Private","Private","Private","Public","Private","Public","Private","Private","Public","Public","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Public","Public","Private","Private","Private","Private","Private","Public","Private","Private","Public","Public","Private","Public","Public","Public","Private","Public","Private","Private","Public","Private","Private","Private","Private","Public","Private","Public","Public","Private","Private","Private","Public","Private","Private","Public","Private","Public","Private","Private","Private","Public","Public","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Public","Public","Public","Public","Private","Private","Public","Private","Private","Private","Public","Public","Public","Public","Private","Public","Private","Public","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Public","Public","Private","Public","Private","Public","Public","Public","Private","Private","Public","Private","Private","Public","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Public","Public","Private","Private","Private","Public","Private","Private","Private","Private","Public","Public","Private","Public","Private","Private","Private","Private","Private","Private","Public","Private","Public","Private","Private","Private","Public","Public","Public","Public","Public","Public","Private","Private","Private","Public","Public","Private","Public","Private","Private","Public","Public","Public","Public","Public","Private","Public","Private","Public","Private","Private","Public","Public","Private","Private","Public","Public","Public","Private","Public","Public","Private","Public","Public","Public","Public","Public","Public","Public","Public","Public","Public","Private","Private","Private","Public","Private","Private","Private","Public","Private","Private","Private","Public","Private","Private","Private","Public","Private","Public","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Public","Private","Public","Private","Private","Public","Private","Private","Public","Private","Private","Public","Public","Private","Private","Private","Private","Private","Private","Private","Private","Public","Public","Private","Private","Private","Private","Public","Private","Private","Private","Public","Public","Private","Public","Public","Public","Public","Public","Public","Private","Private","Private","Public","Private","Public","Public","Private","Private","Public","Private","Private","Private","Private","Private","Private","Public","Private","Public","Private","Public","Public","Public","Private","Private","Public","Private","Private","Public","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Public","Public","Public","Private","Private","Public","Public","Public","Public","Private","Private","Private","Private","Public","Public","Private","Private","Private","Private","Public","Private","Private","Public","Public","Private","Private","Private","Private","Public","Private","Private","Public","Public","Public","Private","Public","Public","Public","Public","Private","Public","Public","Public","Public","Public","Public","Private","Public","Private","Public","Private","Private","Private","Private","Private","Public","Public","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Public","Public","Private","Private","Public","Public","Public","Private","Public","Public","Public","Private","Public","Public","Private","Public","Public","Public","Private","Public","Private","Private","Public","Private","Public","Public","Public","Public","Private","Private","Public","Private","Private","Public","Private","Public","Public","Public","Public","Private","Private","Public","Public","Public","Public","Private","Private","Public","Public","Private","Private","Private","Private","Public","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Public","Private","Public","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Public","Private","Private","Private","Public","Private","Private","Private","Private","Public","Private","Private","Public","Private","Public","Public","Public","Private","Private","Private","Private","Public","Private","Private","Private","Public","Public","Public","Public","Public","Public","Public","Public","Public","Private","Public","Public","Public","Private","Private","Public","Public","Public","Public","Public","Public","Public","Private","Public","Private","Private","Private","Private","Private","Private","Private","Public","Private","Public","Private","Private","Private","Public","Private","Public","Private","Public","Public","Public","Public","Public","Private","Private","Private","Public","Private","Public","Public","Public","Public","Private","Private","Public","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Public","Public","Public","Private","Public","Private","Private","Private","Private","Public","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Private","Public","Private"],"x0":" ","xaxis":"x","y":[10.0,4.0,21.0,5.0,6.0,10.0,2.0,3.0,4.0,6.0,3.0,3.0,6.0,3.0,6.0,7.0,1.0,3.0,3.0,1.0,4.0,0.0,1.0,7.0,8.0,1.0,9.0,2.0,0.0,5.0,5.0,4.0,2.0,18.0,21.0,null,null,31.0,5.0,4.0,9.0,7.0,1.0,8.0,4.0,1.0,36.0,1.0,5.0,5.0,3.0,4.0,3.0,4.0,43.0,7.0,3.0,2.0,23.0,31.0,6.0,32.0,3.0,21.0,8.0,7.0,17.0,0.0,10.0,25.0,5.0,10.0,4.0,5.0,7.0,7.0,0.0,15.0,5.0,24.0,55.0,7.0,12.0,50.0,0.0,1.0,23.0,2.0,6.0,4.0,3.0,5.0,2.0,5.0,3.0,23.0,3.0,2.0,2.0,2.0,4.0,9.0,2.0,5.0,7.0,6.0,4.0,8.0,1.0,5.0,1.0,13.0,7.0,21.0,5.0,1.0,0.0,14.0,0.0,7.0,22.0,1.0,4.0,5.0,6.0,13.0,1.0,3.0,1.0,1.0,5.0,2.0,0.0,4.0,3.0,5.0,1.0,4.0,3.0,7.0,4.0,7.0,4.0,3.0,12.0,1.0,22.0,0.0,37.0,4.0,9.0,6.0,5.0,14.0,0.0,5.0,10.0,26.0,9.0,0.0,0.0,14.0,1.0,0.0,35.0,12.0,2.0,3.0,0.0,2.0,3.0,3.0,3.0,0.0,9.0,10.0,0.0,7.0,7.0,5.0,6.0,2.0,1.0,7.0,4.0,9.0,1.0,3.0,4.0,4.0,0.0,7.0,6.0,4.0,4.0,0.0,2.0,19.0,6.0,2.0,6.0,2.0,2.0,9.0,8.0,10.0,1.0,12.0,7.0,16.0,4.0,3.0,8.0,31.0,12.0,6.0,7.0,16.0,3.0,15.0,35.0,5.0,3.0,11.0,6.0,2.0,4.0,0.0,6.0,11.0,3.0,14.0,25.0,2.0,2.0,38.0,20.0,0.0,3.0,3.0,8.0,15.0,2.0,13.0,7.0,2.0,5.0,4.0,1.0,0.0,1.0,5.0,5.0,9.0,0.0,9.0,19.0,4.0,2.0,13.0,6.0,4.0,5.0,3.0,7.0,20.0,14.0,3.0,110.0,2.0,9.0,13.0,59.0,1.0,8.0,5.0,40.0,7.0,10.0,9.0,1.0,3.0,38.0,2.0,2.0,5.0,2.0,39.0,2.0,5.0,9.0,27.0,3.0,7.0,1.0,6.0,5.0,6.0,5.0,4.0,5.0,10.0,1.0,7.0,9.0,2.0,4.0,6.0,3.0,7.0,1.0,4.0,2.0,6.0,8.0,3.0,8.0,1.0,3.0,9.0,1.0,3.0,4.0,1.0,8.0,5.0,4.0,6.0,3.0,7.0,2.0,11.0,9.0,3.0,2.0,18.0,3.0,10.0,1.0,4.0,12.0,6.0,5.0,13.0,1.0,10.0,5.0,3.0,1.0,1.0,4.0,2.0,3.0,3.0,22.0,15.0,20.0,4.0,13.0,30.0,10.0,11.0,20.0,10.0,3.0,8.0,16.0,8.0,5.0,5.0,9.0,15.0,10.0,8.0,4.0,12.0,4.0,7.0,2.0,4.0,4.0,2.0,4.0,3.0,5.0,13.0,2.0,3.0,5.0,7.0,34.0,11.0,5.0,4.0,2.0,4.0,3.0,5.0,3.0,11.0,6.0,15.0,4.0,2.0,2.0,15.0,5.0,1.0,2.0,7.0,8.0,6.0,3.0,5.0,1.0,24.0,4.0,3.0,18.0,4.0,11.0,12.0,4.0,8.0,3.0,0.0,10.0,1.0,3.0,5.0,1.0,4.0,6.0,0.0,4.0,4.0,1.0,1.0,5.0,10.0,13.0,4.0,6.0,3.0,6.0,0.0,2.0,4.0,12.0,6.0,7.0,5.0,6.0,5.0,6.0,1.0,3.0,10.0,15.0,2.0,11.0,16.0,9.0,4.0,6.0,9.0,5.0,4.0,4.0,4.0,7.0,2.0,2.0,21.0,3.0,14.0,0.0,6.0,2.0,20.0,7.0,10.0,1.0,2.0,11.0,4.0,3.0,1.0,7.0,1.0,13.0,5.0,8.0,4.0,2.0,1.0,16.0,2.0,16.0,15.0,2.0,5.0,13.0,2.0,3.0,3.0,3.0,7.0,9.0,3.0,4.0,14.0,1.0,2.0,14.0,20.0,6.0,7.0,3.0,5.0,5.0,4.0,6.0,2.0,3.0,6.0,4.0,4.0,1.0,1.0,5.0,7.0,7.0,17.0,9.0,5.0,3.0,41.0,5.0,13.0,3.0,3.0,2.0,98.0,4.0,1.0,8.0,6.0,2.0,6.0,3.0,8.0,3.0,9.0,2.0,36.0,5.0,11.0,4.0,9.0,8.0,18.0,15.0,26.0,8.0,14.0,3.0,5.0,6.0,55.0,25.0,5.0,10.0,2.0,17.0,21.0,6.0,65.0,10.0,5.0,7.0,11.0,11.0,24.0,20.0,11.0,7.0,40.0,5.0,6.0,15.0,9.0,8.0,9.0,3.0,6.0,1.0,4.0,4.0,16.0,15.0,11.0,9.0,11.0,58.0,18.0,7.0,2.0,8.0,5.0,35.0,28.0,13.0,3.0,13.0,9.0,3.0,8.0,7.0,21.0,11.0,17.0,45.0,16.0,7.0,1.0,14.0,17.0,10.0,53.0,17.0,11.0,3.0,4.0,2.0,5.0,28.0,5.0,6.0,3.0,8.0,3.0,12.0,12.0,2.0,17.0,19.0,14.0,7.0,0.0,14.0,7.0,2.0,4.0,0.0,35.0,18.0,26.0,9.0,6.0,5.0,37.0,1.0,18.0,11.0,2.0,2.0,7.0,6.0,9.0,0.0,7.0,2.0,0.0,0.0,8.0,5.0,16.0,33.0,0.0,8.0,6.0,18.0,4.0,8.0,8.0,2.0,7.0,3.0,0.0,1.0,4.0,4.0,4.0,2.0,4.0,5.0,3.0,14.0,7.0,6.0,null,5.0,16.0,0.0,29.0,5.0,20.0,12.0,31.0,6.0,7.0,1.0,15.0,20.0,8.0,4.0,32.0,9.0,1.0,8.0,16.0,35.0,1.0,5.0,4.0,3.0,1.0,2.0,0.0,7.0,25.0,12.0,7.0,16.0,4.0,18.0,20.0,12.0,0.0,8.0,3.0,10.0,10.0,10.0,1.0,6.0,2.0,1.0,9.0,8.0,6.0,6.0,42.0,7.0,8.0,5.0,4.0,3.0,8.0,15.0,7.0,13.0,6.0,12.0,1.0,1.0,7.0,0.0,12.0,6.0,15.0,30.0,14.0,2.0,23.0,7.0,40.0,7.0,3.0,6.0,3.0,14.0,4.0,27.0,9.0,4.0,9.0,12.0,28.0,1.0,22.0,4.0,5.0,4.0,11.0,18.0,19.0,3.0,7.0,1.0,20.0,54.0,5.0,9.0,5.0,7.0,13.0,12.0,4.0,11.0,0.0,8.0,7.0,8.0,16.0,3.0,7.0,11.0,38.0,3.0,14.0,3.0,7.0,4.0,14.0,13.0,11.0,11.0,14.0,2.0,20.0,12.0,4.0,5.0,2.0,2.0,6.0,19.0,7.0,13.0,4.0,20.0,5.0,15.0,7.0,9.0,16.0,19.0,1.0,6.0,3.0,6.0,9.0,2.0,14.0,16.0,3.0,8.0,6.0,2.0,16.0,8.0,4.0,2.0,3.0,20.0,10.0,10.0,14.0,10.0,15.0,5.0,7.0,13.0,11.0,10.0,22.0,20.0,2.0],"y0":" ","yaxis":"y","type":"violin"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Facility Type"},"tickangle":45},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Treatment Initiation Delay (Days)"}},"legend":{"tracegroupgap":0},"title":{"text":"Violin Plot of Treatment Initiation Delay by Facility Type"},"violinmode":"group"},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('0b18f677-ce01-4bd9-8ab2-7d1170d36a07');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<p>This violin plot provides a detailed view of the distribution of treatment initiation delays by facility type (public and private). Here are some insights we can derive:</p>
+<p><strong>Distribution Shape</strong>: Both public and private facilities have a similar shape in their distribution, with most delays clustered between 0 and 20 days. This indicates that a large proportion of patients in both facility types begin treatment within this period.</p>
+<p><strong>Density of Short Delays</strong>: The wider sections near 0–20 days show high density for both facility types, reinforcing that most patients experience relatively short delays in treatment initiation. However, public facilities have a slightly more pronounced density near the lower delay times compared to private facilities, indicating that public facilities might be slightly quicker for the majority of cases.</p>
+<p><strong>Longer Delays and Outliers</strong>: For both facility types, there are long-tail distributions with some delays extending to over 100 days, though these are rare. Private facilities, in particular, show a longer tail, suggesting that some patients experience unusually long delays. This long tail could reflect certain inefficiencies or unique cases in private facilities that cause these delays.</p>
+<p><strong>Variation in Delays</strong>: The boxplots embedded within each violin plot confirm that the interquartile range (IQR) is similar across facility types, suggesting comparable variability for the majority of patients. However, the longer tail in private facilities points to higher variability in extreme cases.</p>
+<p><strong>Interpretation</strong> The majority of patients in both public and private facilities experience similar and relatively short treatment initiation delays. However, private facilities seem to have a slightly higher likelihood of very long delays for a small subset of patients, as shown by the extended tail. This could be due to a range of factors, such as administrative processes, access to specific resources, or patient demographics. Identifying and analyzing the factors contributing to these delays might help in improving treatment timeliness in private facilities.</p>
+<div id="b726d4b4" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>initiation_delays_plot <span class="op">=</span> px.bar(treatment_init_delays_table, x<span class="op">=</span><span class="st">"first_visit_type"</span>, y<span class="op">=</span><span class="st">"mean_treatment_initiation_delay_in_days"</span>,</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>title<span class="op">=</span><span class="st">"Length of delays in TB treatment initiation by facility type"</span>,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"first_visit_type"</span>: <span class="st">"Facility type"</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_treatment_initiation_delay_in_days"</span> : <span class="st">"Mean Treatment Delay in days"</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>initiation_delays_plot.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>                            <div id="d20ce744-e776-44c6-8525-2d30487741f5" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("d20ce744-e776-44c6-8525-2d30487741f5")) {                    Plotly.newPlot(                        "d20ce744-e776-44c6-8525-2d30487741f5",                        [{"alignmentgroup":"True","hovertemplate":"Facility type=%{x}\u003cbr\u003eMean Treatment Delay in days=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"v","showlegend":false,"textposition":"auto","x":["Private","Public"],"xaxis":"x","y":[8.432098765432098,9.270967741935484],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Facility type"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Mean Treatment Delay in days"}},"legend":{"tracegroupgap":0},"title":{"text":"Length of delays in TB treatment initiation by facility type"},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('d20ce744-e776-44c6-8525-2d30487741f5');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<p>According to the plot, both private and public facilities have similar average delays, with public facilities showing a slightly higher delay. This suggests that delays in TB treatment initiation are nearly comparable across facility types, although public facilities may experience marginally longer delays on average.</p>
+</section>
+</section>
+<section id="wrap-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrap-up">Wrap Up</h2>
+<p>That’s it for this assignment! Feel free to explore further and share your findings.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
