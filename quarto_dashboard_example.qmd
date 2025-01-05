@@ -39,6 +39,7 @@ map_fig = px.choropleth(
     color_continuous_scale="Blues",
 ).update_layout(coloraxis_showscale=False)
 
+
 # Largest 20 countries by Life Expectancy (bar chart) with a blue color scale
 top_20 = gap_07.nlargest(20, "pop").sort_values("lifeExp", ascending=True)
 bar_fig = px.bar(

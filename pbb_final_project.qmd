@@ -1,0 +1,448 @@
+--- 
+title: "GAPMINDER | TUBERCULOSIS TREATMENT NOTIFICATIONS 2007"
+author: "Ester Nepolo"
+format: dashboard 
+---
+
+```{python}
+import pandas as pd
+import plotly.express as px
+import statsmodels.api as sm
+import itables
+```
+
+```{python}
+# Load data
+tb_treatment_notification = pd.read_csv("data/all_forms_of_tb_treatment_coverage_percent.csv")
+tb_treatment_notification_dots = pd.read_csv("data/all_forms_of_tb_detection_rate_percent_dots_only.csv")
+```
+
+```{python}
+# Pivot datasets
+def pivot_data(df, id_vars, value_name):
+    return df.melt(id_vars=id_vars, var_name="year", value_name=value_name)
+
+tb_treatment_notification_long = pivot_data(tb_treatment_notification, id_vars=["country"], value_name="facilities_notification")
+tb_treatment_notification_dots_long = pivot_data(tb_treatment_notification_dots, id_vars=["country"], value_name="dots_notification")
+
+# Display the head of the melted dataframes
+#print(tb_treatment_notification_long.head())
+#print(tb_treatment_notification_dots_long.head())
+
+#Display the data type
+
+#print(tb_treatment_notification_long["facilities_notification"].head())
+#print(tb_treatment_notification_dots_long["dots_notification"].head())
+
+```
+
+```{python}
+# Add ISO code to both DataFrames
+import pycountry
+
+# Helper function to get ISO code for a country name
+def get_country_iso(country_name):
+    try:
+        return pycountry.countries.lookup(country_name).alpha_3  # Get ISO 3166-1 alpha-3 code
+    except LookupError:
+        return None  # Return None if the country is not found
+
+# Add ISO codes to the DataFrames
+tb_treatment_notification_long["country_iso"] = tb_treatment_notification_long["country"].apply(get_country_iso)
+tb_treatment_notification_dots_long["country_iso"] = tb_treatment_notification_dots_long["country"].apply(get_country_iso)
+
+# Check for countries without ISO codes
+missing_isos = tb_treatment_notification_long[tb_treatment_notification_long["country_iso"].isna()]["country"].unique()
+#print("Countries with missing ISO codes:", missing_isos)
+
+```
+
+
+```{python}
+# Merge datasets
+
+# This part will handle overlaps without suffixes, rename the conflicting columns in one of the DataFrames before merging:
+tb_treatment_notification_dots_long = tb_treatment_notification_dots_long.rename(
+    columns={"conflicting_column_name": "renamed_column"}
+)
+
+tb_treatment_notification_long = tb_treatment_notification_long.rename(
+    columns={"conflicting_column_name": "renamed_column"}
+)
+
+tb_treatment_notification_final = pd.merge(
+    tb_treatment_notification_long,
+    tb_treatment_notification_dots_long,
+    on=["country_iso", "year"],
+    how="inner",
+    suffixes=(
+        "",
+        "_dots",
+    ),  # Add suffix '_dots' to conflicting columns in the second DataFrame
+)
+
+# Inspect the final DataFrame
+# print(tb_treatment_notification_final.head())
+
+```
+
+
+```{python}
+# Check if the column contains any non-NaN values
+if tb_treatment_notification_final["facilities_notification"].notna().any():
+    # Get the index of the row with the maximum value in the 'facilities_notification' column
+    max_index = tb_treatment_notification_final["facilities_notification"].idxmax()
+
+    # Get the country (or relevant column) for that index
+    tb_treatment_notification_long = tb_treatment_notification_final.loc[
+        max_index, "country"
+    ]  # Replace "country" with the relevant column name
+else:
+    tb_treatment_notification_long = (
+        None  # Or assign an appropriate value (e.g., "No data")
+    )
+
+#print(
+ #   f"Country with the highest TB treatment notifications: {tb_treatment_notification_long}"
+  #  )
+
+```
+
+```{python}
+
+# Convert 'facilities_notification' and 'dots_notification' to numeric
+tb_treatment_notification_final["facilities_notification"] = pd.to_numeric(
+    tb_treatment_notification_final["facilities_notification"], errors="coerce"
+)
+tb_treatment_notification_final["dots_notification"] = pd.to_numeric(
+    tb_treatment_notification_final["dots_notification"], errors="coerce"
+)
+
+# Convert 'year' column to numeric
+tb_treatment_notification_final["year"] = pd.to_numeric(
+    tb_treatment_notification_final["year"], errors="coerce"
+)
+
+# Filter the dataset for the year 2007
+filtered_by_year = tb_treatment_notification_final[
+    tb_treatment_notification_final["year"] == 2007
+]
+# print(f"Rows after filtering by year 2007: {len(filtered_by_year)}")
+
+# Drop rows where 'country_iso' is NaN
+filtered_by_country_iso = filtered_by_year.dropna(subset=["country_iso"])
+# print(f"Rows after dropping missing 'country_iso': {len(filtered_by_country_iso)}")
+
+# Drop rows where 'facilities_notification' or 'dots_notification' is NaN
+final_filtered_dataset = filtered_by_country_iso.dropna(
+    subset=["facilities_notification", "dots_notification"]
+)
+# print(f"Rows after dropping missing notifications: {len(final_filtered_dataset)}")
+
+# Check if the final filtered dataset is empty
+if not final_filtered_dataset.empty:
+    # Compute the row with the maximum value in 'facilities_notification' or 'dots_notification'
+    max_index = (
+        final_filtered_dataset[["facilities_notification", "dots_notification"]]
+        .sum(axis=1)
+        .idxmax()
+    )
+
+    # Extract the country name (or relevant column) for that row
+    tb_treatment_notification_long = final_filtered_dataset.loc[max_index, "country"]
+else:
+    tb_treatment_notification_long = None  # Or assign a default value
+
+# print(
+# f"Country with the highest TB treatment notifications in 2007: {tb_treatment_notification_long}"
+# )
+
+# print(final_filtered_dataset.info())
+# print(final_filtered_dataset.head())
+
+```
+
+
+```{python}
+# Summary statistics for 'facilities_notification'
+
+# Compute highest tb notification
+highest_tb_notification = final_filtered_dataset.sort_values("facilities_notification", ascending=False).head(1).squeeze()
+highest_tb_notification_country = highest_tb_notification["country"]
+highest_tb_notification_value = round(highest_tb_notification["facilities_notification"], 1)
+
+#print(f"The country with the highest TB notifications is {highest_tb_notification_country} with a value of {highest_tb_notification_value}.")
+
+# Compute the lowest TB notification
+lowest_tb_notification = final_filtered_dataset.sort_values("facilities_notification", ascending=True).head(1).squeeze()
+lowest_tb_notification_country = lowest_tb_notification["country"]
+lowest_tb_notification_value = round(lowest_tb_notification["facilities_notification"], 1)
+
+#print(f"The country with the lowest TB notifications is {lowest_tb_notification_country} with a value of {lowest_tb_notification_value}.")
+
+# Compute the average TB treatment notifications
+average_tb_notification_value = round(final_filtered_dataset["facilities_notification"].mean(), 1)
+
+#print(f"The average TB notifications across all countries is {average_tb_notification_value}.")
+
+# Summary statistics for 'dots_notification'
+
+# Compute highest dots tb treatment notification
+highest_dots_tb_notification = final_filtered_dataset.sort_values("dots_notification", ascending=False).head(1).squeeze()
+highest_dots_tb_notification_country = highest_dots_tb_notification["country"]
+highest_dots_tb_notification_value = round(highest_dots_tb_notification["dots_notification"], 1)
+
+#print(f"The country with the highest dots TB notifications is {highest_dots_tb_notification_country} with a value of {highest_dots_tb_notification_value}.")
+
+# Compute the lowest TB notification
+lowest_dots_tb_notification = final_filtered_dataset.sort_values("dots_notification", ascending=True).head(1).squeeze()
+lowest_dots_tb_notification_country = lowest_dots_tb_notification["country"]
+lowest_dots_tb_notification_value = round(lowest_dots_tb_notification["dots_notification"], 1)
+
+#print(f"The country with the lowest dots TB notifications is {lowest_dots_tb_notification_country} with a value of {lowest_dots_tb_notification_value}.")
+
+# Compute the average TB treatment notifications
+average_dots_tb_notification_value = round(final_filtered_dataset["dots_notification"].mean(), 1)
+
+#print(f"The average dots TB notifications across all countries is {average_dots_tb_notification_value}.")
+ 
+```
+
+```{python}
+# Visualize top 20 countries with highest facility TB treatment notifications in 2007
+
+# Sort the dataset by 'facilities_notification' in descending order and select the top 20 countries
+# Select the top 20 countries with the highest facility notifications
+top_20_countries = final_filtered_dataset.sort_values(
+    "facilities_notification", ascending=False
+).head(20)
+
+# Create the bar chart
+# Select the top 20 countries with the highest facility notifications
+top_20_countries = final_filtered_dataset.sort_values(
+    "facilities_notification", ascending=False
+).head(20)
+
+# Create the bar chart
+fig1 = px.bar(
+    top_20_countries.sort_values(by="facilities_notification", ascending=True),
+    x="facilities_notification",
+    y="country",
+    title="Top 20 Countries with the Highest Proportion of Facility TB Treatment Notifications in 2007",
+    color="facilities_notification",
+    color_continuous_scale="Blues",  # Apply a blue gradient color scale
+    labels={
+        "facilities_notification": "Facility TB Treatment Notifications",
+        "country": "Country",
+    },
+).update_layout(coloraxis_showscale=False)
+
+
+# Visualize top 20 countries with highest dots TB treatment notifications in 2007
+
+# Sort the dataset by 'dots_notification' in descending order and select the top 20 countries
+top_20_countries_dots = final_filtered_dataset.sort_values(
+    "dots_notification", ascending=False
+).head(20)
+# Create the bar chart
+fig2 = px.bar(
+    top_20_countries.sort_values(by="dots_notification", ascending=True),
+    x="dots_notification",
+    y="country",
+    title="Top 20 Countries with the Highest Proportion of DOTS TB Treatment Notifications in 2007",
+    color="dots_notification",
+    color_continuous_scale="Blues",  # Apply a blue gradient color scale
+    labels={
+        "dots_notification": "DOTS TB Treatment Notifications (%)",
+        "country": "Country",
+    },
+).update_layout(coloraxis_showscale=False)
+
+
+# Create a choropleth map for facility notifications
+map1 = px.choropleth(
+    final_filtered_dataset,
+    locations="country_iso",  # Use ISO codes for mapping
+    color="facilities_notification",  # Color based on TB notifications
+    hover_name="country",  # Display country names on hover
+    title="Proportion of Health Facilities TB Treatment Notifications by Country in 2007",
+    color_continuous_scale="Blues",  # Use a blue color scale
+    labels={"facilities_notification": "Facility TB Treatment Notifications"},
+).update_layout(
+    geo=dict(showframe=False, showcoastlines=True, projection_type="natural earth"),
+    coloraxis_colorbar=dict(
+        title="Facilities Notifications (%)"
+    ),  # Add color bar title
+)
+
+
+# Create a choropleth map for DOTS notifications
+map2 = px.choropleth(
+    final_filtered_dataset,
+    locations="country_iso",  # Use ISO codes for mapping
+    color="dots_notification",  # Color based on TB notifications
+    hover_name="country",  # Display country names on hover
+    title="Proportion of DOTS TB Treatment Notifications by Country in 2007",
+    color_continuous_scale="Blues",  # Use a blue color scale
+    labels={"dots_notification": "DOTS Treatment Notifications"},
+).update_layout(
+    geo=dict(showframe=False, showcoastlines=True, projection_type="natural earth"),
+    coloraxis_colorbar=dict(title="DOTS Notifications (%)"),  # Add color bar title
+)
+
+
+# Correlation plot
+fig3 = px.scatter(
+    final_filtered_dataset,
+    x="facilities_notification",
+    y="dots_notification",
+    title="Correlation between Facility and DOTS Notifications",
+    labels={
+        "facilities_notification": "Health Facilities Notifications",
+        "dots_notification": "DOTS Notifications",
+        "country": "Country",
+    },
+    hover_data=["country"],  # Display country information on hover
+    color_discrete_sequence=["light blue"],  # Set marker color to orange
+    trendline="ols",  # Add an Ordinary Least Squares (OLS) trendline
+).update_layout(
+    xaxis_title="Facility TB Notifications (%) ",
+    yaxis_title="DOTS Notifications (%)",
+    template="plotly_white",  # Clean layout style
+)
+
+```
+
+# FACILITIES TB NOTIFICATIONS
+
+## Row 1 {height=30%}
+
+::: {.valuebox icon="heart" color="#1E90FF" title="Highest TB Notification"}
+
+`{python} str(highest_tb_notification_value)`
+
+`{python} highest_tb_notification_country`
+
+:::
+
+::: {.valuebox icon="thermometer" color="#87CEFA" title="Lowest TB Notification"} 
+
+`{python} str(lowest_tb_notification_value)`
+
+`{python} lowest_tb_notification_country`
+
+:::
+
+::: {.valuebox icon="graph-up" color="#4682B4" title="Average TB Notification"}
+
+`{python} str(average_tb_notification_value)`
+
+:::
+
+## Row 2 {height=60%}
+
+### {width=70%}
+
+```{python}
+map1
+```
+
+### {width=40%}
+
+```{python}
+fig1
+```
+
+# DOTS TB NOTIFICATIONS
+
+## Row 1 {height=30%}
+
+::: {.valuebox icon="heart" color="#1E90FF" title="Highest DOTS TB Notification"}
+
+`{python} str(highest_dots_tb_notification_value)`
+
+`{python} highest_dots_tb_notification_country`
+
+:::
+
+::: {.valuebox icon="thermometer" color="#87CEFA" title="Lowest DOTS TB Notification"} 
+
+`{python} str(lowest_dots_tb_notification_value)`
+
+`{python} lowest_dots_tb_notification_country`
+
+:::
+
+::: {.valuebox icon="graph-up" color="#4682B4" title="Average DOTS TB Notification"}
+
+`{python} str(average_dots_tb_notification_value)`
+
+:::
+
+## Row 2 {height=60%}
+
+### {width=70%}
+
+```{python}
+map2
+```
+
+### {width=40%}
+
+```{python}
+fig2
+```
+
+# CORRELATIONS
+
+### Column {width="80%"}
+
+```{python}
+fig3
+```
+
+### Column {width="20%"}
+
+This figure is showing the relationship between Health Facility and DOTS (Community_based) TB treatment notifications reported as proportions.
+
+1. Linear Relationship
+
+The data points do not clearly form a straight-line trend, suggesting that the relationship may not be strongly linear.
+While some clusters of points indicate potential patterns, the distribution appears scattered, especially at higher notification levels.
+
+2. Clustering
+A notable cluster of points is observed around 80 Facility TB Notifications, with varying DOTS Notifications ranging from low to high. This suggests that many facilities consistently report similar levels of notifications.
+A smaller cluster is visible in the range of 40–60 Facility Notifications, indicating moderate activity.
+
+3. Outliers
+A few points deviate significantly from the main cluster, particularly with DOTS Notifications above 150. These might indicate:
+Facilities or regions with higher-than-average DOTS notifications.
+Data discrepancies or unique cases.
+
+4. Trend Indication
+There seems to be a general positive trend (higher Facility TB Notifications correlate with higher DOTS Notifications), but it is weak and not uniform.
+A formal correlation analysis (e.g., Pearson or Spearman coefficient) could provide further insight into the strength and nature of the relationship.
+5. Implications:
+The plot suggests that Facility TB Notifications and DOTS Notifications might have a weak or non-linear relationship.
+Clusters and outliers should be further investigated to understand regional or operational differences.
+
+
+# DATA DOWNLOAD
+
+```{python}
+# Display full dataset with itables
+itables.show(
+    final_filtered_dataset, caption="Gapminder Dataset (2007)", buttons=["csvHtml5"]
+)
+```
+
+
+# ABOUT
+
+This data comes from the python `plotly.express` library’s `gapminder` dataset, which is originally sourced from the Gapminder Foundation.
+
+The Gapminder Foundation is a non-profit venture that promotes sustainable global development and achievement of the United Nations Millennium Development Goals by increasing use and understanding of statistics and other information about social, economic, and environmental development.
+
+**Watch Hans Rosling’s TED Talk:**
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hVimVzgtD6w?si=dKHepC5EXhjaXOe2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
